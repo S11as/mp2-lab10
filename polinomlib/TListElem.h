@@ -18,6 +18,7 @@ protected:
     TListElem* next;
     TListElem* prev;
 public:
+    TListElem();
     TListElem(T _data);
     ~TListElem();
 
@@ -114,6 +115,13 @@ bool TListElem<T>::operator==(TListElem &_elem) {
 template<class T>
 bool TListElem<T>::operator!=(TListElem &_elem) {
     return this->GetData() != _elem.GetData();
+}
+
+template<class T>
+TListElem<T>::TListElem() {
+    this->data = 0;
+    this->next = 0;
+    this->prev = 0;
 }
 
 

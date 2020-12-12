@@ -1,7 +1,9 @@
 #include <iostream>
+#include "TMonom.h"
 
 int main()
 {
-    std::cout<<"Hello world"<<std::endl;
+    TMonom a(new double[3]{1,2,3}, 3, 1);
+    std::cout<<a<<std::endl;
     return 0;
 }
