@@ -19,7 +19,7 @@ protected:
 public:
     TList();
     TList(TList<T>& _v);
-    ~TList();
+    virtual ~TList();
 
     TList<T>& operator =(TList<T>& _v);
 
@@ -101,7 +101,7 @@ TList<T>::TList(TList<T>& _v)
 
     TListElem<T>* iter = _v.root;
     if(iter !=0){
-        auto* buffer = new TListElem<T>(*iter);
+        auto* buffer = iter->Clone();
         buffer->SetPrev(0);
         buffer->SetNext(0);
         this->root = buffer;
@@ -110,7 +110,7 @@ TList<T>::TList(TList<T>& _v)
         iter = iter->GetNext();
 
         while(iter != 0){
-            buffer = new TListElem<T>(*iter);
+            buffer = iter->Clone();
 
             buffer->SetNext(0);
             buffer->SetPrev(prev);
@@ -157,7 +157,7 @@ TList<T>& TList<T>::operator =(TList<T>& _v)
 
     TListElem<T>* iter = _v.root;
     if(iter !=0){
-        auto* buffer = new TListElem<T>(*iter);
+        auto* buffer = iter->Clone();
         buffer->SetPrev(0);
         buffer->SetNext(0);
         this->root = buffer;
@@ -166,7 +166,7 @@ TList<T>& TList<T>::operator =(TList<T>& _v)
         iter = iter->GetNext();
 
         while(iter != 0){
-            buffer = new TListElem<T>(*iter);
+            buffer = iter->Clone();
 
             buffer->SetNext(0);
             buffer->SetPrev(prev);
@@ -197,7 +197,7 @@ inline void TList<T>::InsFirst(T d)
 template<class T>
 inline void TList<T>::InsLast(T d)
 {
-    auto* elem = new TListElem<T>(d);
+    TListElem<T>* elem = new TListElem<T>(d);
     elem->SetNext(0);
     elem->SetPrev(this->last);
     if(this->last != 0)
@@ -211,7 +211,7 @@ inline void TList<T>::InsLast(T d)
 template<class T>
 inline void TList<T>::Ins(TListElem<T>* e, T d)
 {
-    auto* elem = new TListElem<T>(d);
+    TListElem<T>* elem = new TListElem<T>(d);
     elem->SetNext(e->GetNext());
     elem->SetPrev(e);
     e->GetNext()->SetPrev(elem);
@@ -292,8 +292,6 @@ TList<T> &TList<T>::load(const char *name) {
     file.open(name, std::fstream::in);
     if (!file.is_open())
         throw "Cant open such file";
-    int size;
-    file >> size;
     auto* list = new TList();
     file>>*list;
     file.close();
@@ -306,7 +304,7 @@ void TList<T>::save(const char *name) {
     file.open(name, fstream::out);
     if (!file.is_open())
         throw "Cant open such file";
-    file << this->count << "\n" << *this;
+    file << this->count+1 << "\n" << *this;
     file.close();
 }
 

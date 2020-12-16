@@ -4,6 +4,7 @@
 
 #ifndef POLINOMLIB_TMONOM_H
 #define POLINOMLIB_TMONOM_H
+#include "TList.h"
 
 struct TMonomData{
     double* data = nullptr;
@@ -11,15 +12,15 @@ struct TMonomData{
     int dim = 0;
     explicit TMonomData(int t);
     TMonomData(double* data=0, int dim=0, double k=0);
+    void set_dim(int dim);
 
     TMonomData(TMonomData& monomData);
     ~TMonomData();
+    friend ostream&operator<<(ostream& ostr, const TMonomData& monom);
+    friend istream&operator>>(istream& istr, TMonomData& monom);
 };
 
-#include "TList.h"
 class TMonom : public TListElem<TMonomData> {
-protected:
-    TMonomData data;
 public:
     TMonom(TMonomData data);
     TMonom(double* data=0, int dim=0, double k=0);
@@ -48,6 +49,9 @@ public:
 
     bool operator> (const TMonom& monom);
     bool operator< (const TMonom& monom);
+
+    TMonom* Clone();
+    void change_sign();
 
     friend ostream&operator<<(ostream& ostr, const TMonom& monom);
     friend istream&operator>>(istream& istr, TMonom& monom);

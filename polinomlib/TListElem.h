@@ -33,6 +33,8 @@ public:
     bool operator==(TListElem& _elem);
     bool operator!=(TListElem& _elem);
 
+    virtual TListElem* Clone();
+
 
     template <class T1>
     friend ostream& operator<< (ostream& ostr, const TListElem<T1>& A);
@@ -122,6 +124,12 @@ TListElem<T>::TListElem() {
     this->data = 0;
     this->next = 0;
     this->prev = 0;
+}
+
+template<class T>
+TListElem<T> *TListElem<T>::Clone() {
+    auto* res = new TListElem<T>(*this);
+    return res;
 }
 
 
